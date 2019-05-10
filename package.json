@@ -1,0 +1,23 @@
+{
+  "name": "react-express",
+  "version": "1.0.0",
+  "description": "Boilerplate for React and Express",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd client/vidly && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "khaled El-Deep",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
+    "python-shell": "^1.0.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
