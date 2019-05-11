@@ -4,13 +4,15 @@ import Input from "./input";
 import { getCart } from "../../services/movieService";
 import jwtDecode from "jwt-decode";
 import { addCart } from "./../../services/movieService";
+import Select from "./select";
 
 class CartBook extends Component {
   constructor() {
     super();
     this.state = {
       cart: { items: [], total: 0 },
-      userId: ""
+      userId: "",
+      total: 0
     };
   }
 
@@ -20,15 +22,8 @@ class CartBook extends Component {
     const { userId } = jwtDecode(jwt);
     const { data } = await getCart("cart/" + userId);
     this.setState({ cart: data, userId: userId });
-    // console.log(data, "data");
   }
-  // getCart = async () => {
-  //   const jwt = localStorage.getItem("tokenKey");
-  //   // console.log(jwt);
-  //   const { userId } = jwtDecode(jwt);
-  //   const { data } = await getCart("cart/" + userId);
-  //   return data;
-  // };
+
   onRemove = async item => {
     // const token = localStorage.getItem("tokenKey");
     const { userId } = this.state;
@@ -42,9 +37,18 @@ class CartBook extends Component {
     //this.setState({ Books:Deleted });
     // console.log(data);
   };
+  handlePrice = async ({ currentTarget: input }, item) => {
+    const { userId } = this.state;
+
+    const { data } = await addCart("cart/add/" + userId, {
+      quantity: input.value,
+      productId: item.productId
+    });
+    this.setState({ cart: data });
+  };
 
   render() {
-    const { cart } = this.state;
+    const { cart, total } = this.state;
     // const data = getCart();
     // console.log("cart", data);
 
@@ -73,27 +77,27 @@ class CartBook extends Component {
                   {item.product.price}
                   {item.product.authors}
                 </p>
-                <input
+                {/* <input
                   type={"number"}
                   name={"name"}
                   min={1}
                   max={item.product.in_stock}
                   placeholder={item.quantity}
-                  // value={data[name]}
-                  // label={label}
-                  // onChange={this.handleChange}
-                  // error={errors[name]}
+                /> */}
+                <Select
+                  name={"select"}
+                  label={"quantity"}
+                  options={[
+                    { _id: "1", name: "1" },
+                    { _id: "2", name: "2" },
+                    { _id: "3", name: "3" }
+                  ]}
+                  onChange={e => this.handlePrice(e, item)}
                 />
+                <h6>{item.product.price * item.quantity}</h6>
                 <button
                   href="#"
-                  className="btn btn-primary m-4"
-                  onClick={() => this.onAdd(item)}
-                >
-                  Add
-                </button>
-                <button
-                  href="#"
-                  className="btn btn-danger"
+                  className="btn btn-danger m-4"
                   onClick={() => this.onRemove(item)}
                 >
                   Remove
