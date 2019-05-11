@@ -62,21 +62,41 @@ class BookCard extends Component {
                 background: "#dadada"
               }}
             >
-              <Link
-                className="nav-item nav-link"
-                to={{
-                  pathname: "/editproduct",
-                  state: { data: item }
-                }}
-              >
-                <img
-                  className="card-img-top"
-                  src={item.image}
-                  alt="Card image cap"
-                  width={150}
-                  height={200}
-                />
-              </Link>
+              {user.role === "user" && (
+                <Link
+                  className="nav-item nav-link"
+                  to={{
+                    pathname: "/book",
+                    state: { data: item }
+                  }}
+                >
+                  <img
+                    className="card-img-top"
+                    src={item.image}
+                    alt="Card image cap"
+                    width={150}
+                    height={200}
+                  />
+                </Link>
+              )}
+              {user.role === "admin" && (
+                <Link
+                  className="nav-item nav-link"
+                  to={{
+                    pathname: "/editproduct",
+                    state: { data: item }
+                  }}
+                >
+                  <img
+                    className="card-img-top"
+                    src={item.image}
+                    alt="Card image cap"
+                    width={150}
+                    height={200}
+                  />
+                </Link>
+              )}
+
               <div className="card-body" style={{ fontFamily: "Segoe UI " }}>
                 <li
                   style={{ listStyleType: "none" }}
