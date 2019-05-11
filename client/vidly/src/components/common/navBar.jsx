@@ -63,7 +63,10 @@ class NavBar extends Component {
                       </NavLink>
                     </li>
                     <li className="">
-                      <NavLink className="nav-item nav-link" to="/user">
+                      <NavLink
+                        className="nav-item nav-link"
+                        to={{ pathname: "/user", state: { user: user } }}
+                      >
                         {user.username}
                       </NavLink>
                     </li>
@@ -81,7 +84,10 @@ class NavBar extends Component {
                 {user.role === "user" && (
                   <React.Fragment>
                     <li className="">
-                      <NavLink className="nav-item nav-link" to="/user">
+                      <NavLink
+                        className="nav-item nav-link"
+                        to={{ pathname: "/user", state: { user: user } }}
+                      >
                         {user.username}
                       </NavLink>
                     </li>
