@@ -46,7 +46,7 @@ class SingleBook extends Component {
     };
     const res = await axios.post("http://localhost:5000/api/reviews", body);
     reviews.push(res.data);
-    this.setState({ reviews: reviews });
+    this.setState({ reviews: reviews, msg: "" });
   };
 
   render() {
