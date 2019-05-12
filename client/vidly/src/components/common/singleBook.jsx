@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import NavBar from "./navBar";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 class SingleBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: {},
       product: this.props.location.state.data,
       reviews: [],
       msg: ""
@@ -14,6 +16,8 @@ class SingleBook extends Component {
 
   async componentDidMount() {
     const { product } = this.state;
+    const jwt = localStorage.getItem("tokenKey");
+    const user = jwt_decode(jwt);
     const res = await axios.get(
       "http://localhost:5000/api/reviews/products/" + product._id
     );
@@ -24,8 +28,26 @@ class SingleBook extends Component {
       console.log("reviews", res.data.data);
       this.setState({ reviews: res.data.data });
     }
-    this.setState({ product: this.props.location.state.data });
+    this.setState({ product: this.props.location.state.data, user: user });
   }
+
+  onAddReview = async e => {
+    e.preventDefault();
+    let { product, user, reviews } = this.state;
+    const [input] = e.target.children;
+
+    const body = {
+      productId: product._id,
+      title: product.title,
+      image: product.image,
+      userId: user.userId,
+      username: user.username,
+      review: input.value
+    };
+    const res = await axios.post("http://localhost:5000/api/reviews", body);
+    reviews.push(res.data);
+    this.setState({ reviews: reviews });
+  };
 
   render() {
     const { product, reviews, msg } = this.state;
@@ -74,6 +96,12 @@ class SingleBook extends Component {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <form onSubmit={this.onAddReview}>
+            <input type="text" />
+            <input type="submit" value={"Add Review"} />
+          </form>
         </div>
         <div style={{ textAlign: "center" }}>
           <h2>User Reviews</h2>
